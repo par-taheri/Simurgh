@@ -138,7 +138,7 @@ Simurgh Panel can be paired with official backend engine adapters:
 
 ### 1. Install Dependencies
 ```bash
-npm install --legacy-peer-deps
+npm install
 ```
 
 ### 2. Development Mode
