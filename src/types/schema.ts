@@ -36,6 +36,9 @@ export interface AuthMeta {
   sso_redirect_url?: string;
   login_fields?: AuthFieldMeta[];
   show_demo_credentials?: boolean;
+  title?: LocalizedLabel;
+  subtitle?: LocalizedLabel;
+  description?: LocalizedLabel;
 }
 
 export interface SystemMeta {

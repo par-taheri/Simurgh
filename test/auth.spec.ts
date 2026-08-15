@@ -203,4 +203,74 @@ describe('Schema Driven Authentication', () => {
     expect(wrapper.text()).toContain('Demo Credentials:');
     expect(wrapper.text()).toContain('admin@demo.com');
   });
+
+  it('Dynamic Subtitle Test: renders custom localized subtitle from schema', async () => {
+    const schemaStore = useSchemaStore();
+    schemaStore.setLocale('fa');
+    
+    schemaStore.schema = {
+      $schema_version: '1.6.0',
+      system: {
+        title: 'Custom Title',
+        logo_url: '',
+        default_locale: 'fa',
+        supported_locales: ['fa', 'en'],
+        direction: 'rtl',
+        auth: {
+          strategy: 'session',
+          login_url: '/api/admin/auth/login',
+          me_url: '/api/admin/auth/me',
+          logout_url: '/api/admin/auth/logout',
+          subtitle: {
+            fa: 'ورود به پنل ادمین سیمرغ',
+            en: 'Sign in to Simurgh Admin Panel'
+          },
+          login_fields: [
+            { name: 'username', label: 'Username', type: 'text', required: true }
+          ]
+        }
+      },
+      resources: []
+    };
+
+    const wrapper = mount(LoginPage);
+    expect(wrapper.text()).toContain('ورود به پنل ادمین سیمرغ');
+
+    schemaStore.setLocale('en');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.text()).toContain('Sign in to Simurgh Admin Panel');
+  });
+
+  it('Dynamic Subtitle Test: falls back to default when subtitle is omitted in schema', async () => {
+    const schemaStore = useSchemaStore();
+    schemaStore.setLocale('fa');
+    
+    schemaStore.schema = {
+      $schema_version: '1.6.0',
+      system: {
+        title: 'Custom Title',
+        logo_url: '',
+        default_locale: 'fa',
+        supported_locales: ['fa', 'en'],
+        direction: 'rtl',
+        auth: {
+          strategy: 'session',
+          login_url: '/api/admin/auth/login',
+          me_url: '/api/admin/auth/me',
+          logout_url: '/api/admin/auth/logout',
+          login_fields: [
+            { name: 'username', label: 'Username', type: 'text', required: true }
+          ]
+        }
+      },
+      resources: []
+    };
+
+    const wrapper = mount(LoginPage);
+    expect(wrapper.text()).toContain('ورود به پنل ادمین سیمرغ');
+
+    schemaStore.setLocale('en');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.text()).toContain('Sign in to Simurgh Admin Panel');
+  });
 });

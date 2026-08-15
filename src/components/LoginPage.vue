@@ -17,7 +17,7 @@
           {{ systemTitle }}
         </h1>
         <p class="text-xs text-slate-400 font-sans">
-          {{ schemaStore.activeLocale === 'fa' ? `ورود به سامانه مدیریت پویای پروتکل سیمرغ v${schemaStore.schema?.$schema_version || '1.6.0'}` : 'Sign in to Simurgh Protocol Admin Dashboard' }}
+          {{ loginSubtitle }}
         </p>
       </div>
 
@@ -97,6 +97,7 @@ import { reactive, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useSchemaStore } from '../stores/schema';
 import { useUiStore } from '../stores/ui';
+import { resolveLabel } from '../utils/resolveLabel';
 import { Shield, Key, User, Lock, LogIn } from 'lucide-vue-next';
 
 const authStore = useAuthStore();
@@ -107,6 +108,22 @@ const formData = reactive<Record<string, any>>({});
 
 const systemTitle = computed(() => {
   return schemaStore.systemTitle;
+});
+
+const loginSubtitle = computed(() => {
+  const customSubtitle =
+    schemaStore.schema?.system?.auth?.subtitle ||
+    schemaStore.schema?.system?.auth?.description ||
+    schemaStore.schema?.system?.subtitle ||
+    schemaStore.schema?.system?.description;
+
+  if (customSubtitle) {
+    return resolveLabel(customSubtitle, schemaStore.activeLocale);
+  }
+
+  return schemaStore.activeLocale === 'fa'
+    ? `ورود به پنل ادمین سیمرغ v${schemaStore.schema?.$schema_version || '1.6.0'}`
+    : 'Sign in to Simurgh Admin Panel';
 });
 
 const showDemoCredentials = computed(() => {
