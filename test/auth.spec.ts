@@ -143,4 +143,64 @@ describe('Schema Driven Authentication', () => {
     expect(success).toBe(true);
     expect(localStorage.getItem('access_token')).toBeNull();
   });
+
+  it('Demo Credentials Display Test: hides demo credentials box when show_demo_credentials is false', async () => {
+    const schemaStore = useSchemaStore();
+    
+    schemaStore.schema = {
+      $schema_version: '1.6.0',
+      system: {
+        title: 'Test System',
+        logo_url: '',
+        default_locale: 'en',
+        supported_locales: ['en'],
+        direction: 'ltr',
+        auth: {
+          strategy: 'session',
+          login_url: '/api/admin/auth/login',
+          me_url: '/api/admin/auth/me',
+          logout_url: '/api/admin/auth/logout',
+          show_demo_credentials: false,
+          login_fields: [
+            { name: 'username', label: 'Username', type: 'text', required: true }
+          ]
+        }
+      },
+      resources: []
+    };
+
+    const wrapper = mount(LoginPage);
+    expect(wrapper.text()).not.toContain('Demo Credentials:');
+    expect(wrapper.text()).not.toContain('admin@demo.com');
+  });
+
+  it('Demo Credentials Display Test: shows demo credentials box when show_demo_credentials is true or omitted', async () => {
+    const schemaStore = useSchemaStore();
+    
+    schemaStore.schema = {
+      $schema_version: '1.6.0',
+      system: {
+        title: 'Test System',
+        logo_url: '',
+        default_locale: 'en',
+        supported_locales: ['en'],
+        direction: 'ltr',
+        auth: {
+          strategy: 'session',
+          login_url: '/api/admin/auth/login',
+          me_url: '/api/admin/auth/me',
+          logout_url: '/api/admin/auth/logout',
+          show_demo_credentials: true,
+          login_fields: [
+            { name: 'username', label: 'Username', type: 'text', required: true }
+          ]
+        }
+      },
+      resources: []
+    };
+
+    const wrapper = mount(LoginPage);
+    expect(wrapper.text()).toContain('Demo Credentials:');
+    expect(wrapper.text()).toContain('admin@demo.com');
+  });
 });

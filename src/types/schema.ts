@@ -35,6 +35,7 @@ export interface AuthMeta {
   logout_url: string;
   sso_redirect_url?: string;
   login_fields?: AuthFieldMeta[];
+  show_demo_credentials?: boolean;
 }
 
 export interface SystemMeta {

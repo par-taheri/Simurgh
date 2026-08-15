@@ -22,7 +22,10 @@
       </div>
 
       <!-- Quick Demo Credentials Box -->
-      <div class="bg-indigo-950/40 border border-indigo-500/20 rounded-2xl p-3.5 space-y-2 text-xs">
+      <div
+        v-if="showDemoCredentials"
+        class="bg-indigo-950/40 border border-indigo-500/20 rounded-2xl p-3.5 space-y-2 text-xs"
+      >
         <div class="flex items-center justify-between text-indigo-300 font-semibold">
           <span class="flex items-center gap-1.5">
             <Key class="w-3.5 h-3.5 text-indigo-400" />
@@ -104,6 +107,10 @@ const formData = reactive<Record<string, any>>({});
 
 const systemTitle = computed(() => {
   return schemaStore.systemTitle;
+});
+
+const showDemoCredentials = computed(() => {
+  return schemaStore.schema?.system?.auth?.show_demo_credentials !== false;
 });
 
 const loginFields = computed(() => {
