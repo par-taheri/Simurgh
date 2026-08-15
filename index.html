@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/simurgh-logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simurgh Panel - Dynamic Admin Engine</title>
+    <!-- Google Fonts & Material Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  </head>
+  <body class="bg-slate-900 text-slate-100">
+    <!-- Global App Configuration -->
+    <script>
+      window.APP_CONFIG = {
+        baseURL: ''
+      };
+    </script>
+
+    <!-- Embedded Simurgh Protocol Schema Definition -->
+    <script id="simurgh-schema" type="application/json">
+{
+  "$schema_version": "1.6.0",
+  "system": {
+    "title": { "fa": "پنل مدیریت سیمرغ", "en": "Simurgh Panel" },
+    "logo_url": "/simurgh-logo.svg",
+    "default_locale": "en",
+    "direction": "ltr",
+    "endpoints": {
+      "upload": "/api/admin/uploads"
+    },
+    "auth": {
+      "strategy": "session",
+      "login_url": "/api/admin/auth/login",
+      "me_url": "/api/admin/auth/me",
+      "logout_url": "/api/admin/auth/logout",
+      "sso_redirect_url": "https://sso.example.com/login?callback=/api/admin/auth/callback",
+      "login_fields": [
+        { "name": "email", "label": { "en": "Email Address", "fa": "ایمیل یا نام کاربری" }, "placeholder": { "en": "Enter your email or username...", "fa": "ایمیل یا نام کاربری خود را وارد کنید..." }, "type": "text", "required": true },
+        { "name": "password", "label": { "en": "Password", "fa": "کلمه عبور" }, "placeholder": { "en": "Enter your password...", "fa": "کلمه عبور خود را وارد کنید..." }, "type": "password", "required": true }
+      ]
+    },
+    "custom_fonts": [
+      {
+        "name": "Lalezar",
+        "url": "https://fonts.gstatic.com/s/lalezar/v14/OpUp1a5dqj36gZ2zXh_WfQ.woff2",
+        "format": "woff2",
+        "label": { "en": "Lalezar (Title)", "fa": "لاله‌زار (عنوان)" }
+      },
+      {
+        "name": "Sahel",
+        "url": "https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/Sahel.woff2",
+        "format": "woff2",
+        "label": { "en": "Sahel (Clean)", "fa": "ساحل (خوانا)" }
+      }
+    ],
+    "custom_font_sizes": [
+      {
+        "size": "15px",
+        "label": { "en": "Medium Fine (15px)", "fa": "متوسط ظریف (۱۵px)" }
+      },
+      {
+        "size": "20px",
+        "label": { "en": "Sub-heading (20px)", "fa": "زیرعنوان (۲۰px)" }
+      },
+      {
+        "size": "32px",
+        "label": { "en": "Hero Display (32px)", "fa": "تیتر برجسته (۳۲px)" }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "name": "news_item",
+      "plural_name": "news",
+      "title": { "fa": "اخبار و اطلاعیه‌ها", "en": "News & Announcements" },
+      "icon": "Newspaper",
+      "api_path": "/api/admin/news",
+      "display_in_sidebar": true,
+      "group": { "fa": "مدیریت محتوا", "en": "Content Management" },
+      "order": 1,
+      "default_sort": "id",
+      "per_page_default": 10,
+      "searchable_fields": ["title", "content"],
+      "sortable_fields": ["id", "title", "created_at", "publish_date"],
+      "filterable_fields": ["published"],
+      "permissions": { "can_view": true, "can_insert": true, "can_edit": true, "can_delete": true, "can_export": true },
+      "fields": [
+        { "name": "id", "label": { "fa": "شناسه", "en": "ID" }, "type": "number", "primary_key": true, "auto_increment": true, "read_only": true, "ui": { "show_in_list": true, "show_in_form": false } },
+        { "name": "title", "label": { "fa": "عنوان خبر", "en": "Title" }, "type": "text", "required": true, "ui": { "show_in_list": true, "show_in_form": true, "sortable": true, "searchable": true } },
+        { "name": "content", "label": { "fa": "متن خبر", "en": "Content" }, "type": "text", "form_type": "wysiwyg", "ui": { "show_in_list": false, "show_in_form": true } },
+        { "name": "publish_date", "label": { "fa": "تاریخ انتشار", "en": "Publish Date" }, "type": "date", "form_type": "date", "ui": { "show_in_list": true, "show_in_form": true } }
+      ]
+    },
+    {
+      "name": "user",
+      "plural_name": "users",
+      "title": { "fa": "مدیریت کاربران", "en": "User Management" },
+      "icon": "Users",
+      "api_path": "/api/admin/users",
+      "display_in_sidebar": true,
+      "group": { "fa": "دسترسی‌ها و سیستم", "en": "Access & System" },
+      "order": 2,
+      "default_sort": "id",
+      "per_page_default": 10,
+      "searchable_fields": ["full_name", "email"],
+      "sortable_fields": ["id", "full_name"],
+      "permissions": { "can_view": true, "can_insert": true, "can_edit": true, "can_delete": true, "can_export": true },
+      "fields": [
+        { "name": "id", "label": { "fa": "شناسه", "en": "ID" }, "type": "number", "primary_key": true, "auto_increment": true, "read_only": true, "ui": { "show_in_list": true, "show_in_form": false } },
+        { "name": "full_name", "label": { "fa": "نام و نام خانوادگی", "en": "Full Name" }, "type": "text", "required": true, "ui": { "show_in_list": true, "show_in_form": true, "sortable": true } },
+        { "name": "email", "label": { "fa": "پست الکترونیکی", "en": "Email" }, "type": "text", "required": true, "ui": { "show_in_list": true, "show_in_form": true } }
+      ]
+    }
+  ]
+}
+    </script>
+
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

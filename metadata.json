@@ -1,0 +1,6 @@
+{
+  "name": "Simurgh Panel",
+  "description": "Schema-driven dynamic admin dashboard engine based on Simurgh Protocol v1.6.0 built with Vue 3, Pinia, Vue Router, Tailwind CSS, and Express.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
